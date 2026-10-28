@@ -9,8 +9,8 @@ cd "$(dirname "$0")/../backend/data"
 echo "Downloading county boundaries..."
 curl -G --fail -o counties.geojson \
   "https://services-eu1.arcgis.com/FH5XCsx8rYXqnjF5/arcgis/rest/services/Counties_NationalStatutoryBoundaries_Ungeneralised_2024/FeatureServer/1/query" \
-  --data-urlencode "where=1=1" \
-  --data-urlencode "outFields=ENG_NAME_VALUE" \
+  --data-urlencode "where=Shape__Area > 1000000" \
+  --data-urlencode "outFields=ENG_NAME_VALUE" --data-urlencode "orderByFields=Shape__Area DESC" \
   --data-urlencode "maxAllowableOffset=0.0005" \
   --data-urlencode "geometryPrecision=5" \
   --data-urlencode "outSR=4326" \
