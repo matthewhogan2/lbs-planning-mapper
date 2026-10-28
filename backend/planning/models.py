@@ -36,6 +36,7 @@ class PlanningApplication(models.Model):
 
     reference = models.CharField(max_length=30, unique=True)
     description = models.TextField()
+    address = models.CharField(max_length=255, blank=True)
     app_type = models.CharField(max_length=20, choices=AppType.choices, default=AppType.RESIDENTIAL)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     received_date = models.DateField()

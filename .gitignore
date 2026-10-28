@@ -6,3 +6,6 @@ staticfiles/
 .DS_Store
 .idea/
 .vscode/
+
+# Downloaded datasets (re-create with scripts/download_data.sh)
+backend/data/*.geojson
