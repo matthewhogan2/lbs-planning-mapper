@@ -1,24 +1,18 @@
 // Planning Mapper - front end
 // Step 1: set up the Leaflet map.
 
-// TODO 1: create a Leaflet map in the element with id "map",
-//         centred on Westport (lat 53.80, lng -9.52), zoom level 11.
-// Leaflet wants [lat, lng] here. (The API/GeoJSON use [lng, lat] - watch out in step 2.)
+//creares map
 const map = L.map("map").setView([53.80, -9.52], 11);
 
-// TODO 2: add the OpenStreetMap tile layer.
-// The attribution is required by the OSM licence, so don't remove it.
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+//map behind the application pin Open street
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
   maxZoom: 19,
   attribution:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', //licensse requirement
 }).addTo(map);
 
-// Step 2: load the planning applications from the API and show them on the map.
-// The API (GeoFeatureModelSerializer) hands back a GeoJSON FeatureCollection,
-// so L.geoJSON can read it directly - no manual lat/lng swapping needed here.
 
-// A different colour per status, so the map is readable at a glance.
+//different colours per status so the map is readable at a glance.
 const STATUS_COLOURS = {
   PENDING:"#f0ad4e",
   GRANTED:"#5cb85c",
@@ -37,14 +31,22 @@ function styleByStatus(feature) {
   };
 }
 
-function popupHtml(feature) {
+function esc(text)
+{
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function popupHtml(feature) 
+{
   const p = feature.properties;
   return `
-    <strong>${p.reference}</strong><br>
-    ${p.description}<br>
-    <em>${p.address || "No address given"}</em><br>
-    Status: ${p.status}<br>
-    Received: ${p.received_date}
+    <strong>${esc(p.reference)}}</strong><br>
+    ${esc(p.description)}<br>
+    <em>${esc(p.address || "No address given")}</em><br>
+    Status: ${esc(p.status)}<br>
+    Received: ${esc(p.received_date)}<br>
   `;
 }
 

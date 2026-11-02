@@ -1,17 +1,15 @@
 """
-REST API views (the Controller layer in MVC).
+REST API views the Controller layer in MVC.
 
 Spatial queries:
-  1. nearest   - K nearest applications to a point (GiST KNN index, <-> operator)
+  1. nearest   - K nearest applications to a point 
   2. within    - applications within X km of a point (ST_DWithin)
   3. locate    - which county contains a point (ST_Contains)
   4. nearby    - applications within X m of a route, plus the buffer (ST_DWithin, ST_Buffer)
   5. inside    - applications inside a drawn area (ST_Within)
 
-Distances are measured with ::geography so they're in real metres on the
-Earth's surface. Each distance query first runs a cheap degree-based ST_DWithin
-on the geometry column; that part can use the GiST index and cuts the rows
-down before the exact metre calculation.
+Distances are measured with ::geography so they are in real metres on the earths surface. Each distance query first runs a cheap degree-based ST_DWithin
+on the geometry column; that part can use the GiST index and cuts the rows down before the exact metre calculation.
 """
 import json
 
@@ -36,10 +34,11 @@ from .serializers import (
 METRES_PER_DEGREE_SAFE = 60_000
 
 
-# ---------- input helpers (validation + clear 400 errors) ----------
+#Helper functions for querys
 
 def get_float(params, name, lo, hi, default=None):
     raw = params.get(name, default)
+
     if raw is None:
         raise ValidationError({name: "This query parameter is required."})
     try:
@@ -75,14 +74,13 @@ def within_metres(queryset, geom, metres):
     )
 
 
-# ---------- permissions ----------
-
+#permissions
 class IsOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.owner == request.user
 
 
-# ---------- viewsets ----------
+#view sets
 
 class PlanningApplicationViewSet(viewsets.ModelViewSet):
     """CRUD on applications. Reading is public; writing needs a login."""
