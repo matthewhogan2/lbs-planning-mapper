@@ -146,9 +146,10 @@ class RouteViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+   #query 4 nearby
     @action(detail=True)
     def nearby(self, request, pk=None):
-        """GET /api/routes/7/nearby/?m=500 -> applications within m metres + the buffer polygon"""
+        
         route = self.get_object()
         metres = get_float(request.query_params, "m", 10, 10_000, default=500)
         apps = within_metres(PlanningApplication.objects.all(), route.path, metres)
@@ -166,9 +167,9 @@ class RouteViewSet(viewsets.ModelViewSet):
             "applications": PlanningApplicationSerializer(apps, many=True).data,
         })
 
-
+#query 5 inside
 class AreaOfInterestViewSet(viewsets.ModelViewSet):
-    """A user's own watched areas (POLYGON)."""
+    """A users own watched areas POLYGON)"""
     serializer_class = AreaOfInterestSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
 
