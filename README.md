@@ -8,10 +8,10 @@
 ## Features 
     - Coloured pins with pop up description
     - 5 spatial queries:
-        1. Nearest applications to point.
-        2. Application within radius X km of a point you click
-        3. All application near a route within x m of a line
-        4. All apllication inside an area
+        1. Nearest applications to a point you click.
+        2. Applications within a radius (X km) of a point you click.
+        3. Which county a point you click is in.
+        4. Applications near a route, within X m of a line.
         5. Applications inside an area.
 
 ## Technology Stack
