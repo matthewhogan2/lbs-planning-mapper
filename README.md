@@ -1,20 +1,20 @@
-Author: Matthew Hogan
-Title: Map of Planning Applications
-Description: Shows planning applications on a map in county Mayo with description of application and answers location questions such as the number of applications, applications within a certain distance and what county is this?
+## Author: Matthew Hogan
+## Title: Map of Planning Applications
+## Description: Shows planning applications on a map in county Mayo with description of application and answers location questions such as the number of applications, applications within a certain distance and what county is this?
 
-=== Picture of map ===
+## Picture of map 
 ![alt text](image.png)
 
-=== Features ===
+## Features 
     - Coloured pins with pop up description
     - 5 spatial queries:
-        1. Nearest applications to point.
-        2. Application within radius X km of a point you click
-        3. All application near a route within x m of a line
-        4. All apllication inside an area
+        1. Nearest applications to a point you click.
+        2. Applications within a radius (X km) of a point you click.
+        3. Which county a point you click is in.
+        4. Applications near a route, within X m of a line.
         5. Applications inside an area.
 
-=== Technology Stack ===
+## Technology Stack
     -Database: PostgreSQL and PostGIS 
     -DB admin: pgAdmin 4 
     -Backend: Python 3
@@ -29,11 +29,11 @@ Description: Shows planning applications on a map in county Mayo with descriptio
     -Deployment: Docker and Docker compose separate container with custom bridge network 172.28.0.0/16
     -Data pipeline: Source of the planning applications and county boundaries GeoJSON, outSR=4326
 
-=== Architecture ===
+## Architecture 
     3 containers on one docker network for security and isolation. Only Django and pgAdmin publish port, postGIS reachable inside the network. Browser talks to Django and djanho queries postGIS.
     Diagram of System: ![alt text](image_sys_diagram.png)
 
- === Set up for Local Deployment ===
+ ## Set up for Local Deployment 
     1. Clone the repo:
             git clone https://github.com/matthewhogan2/lbs-planning-mapper
             cd lbs-planning-mapper
@@ -69,11 +69,11 @@ Description: Shows planning applications on a map in county Mayo with descriptio
             docker compose down      # stops containers, keeps the data
             docker compose down -v   # also deletes the database volume
 
-=== Test login ===
+## Test login 
     user: demo
     password: mapper2026
 
-=== User guide ===
+## User guide 
     1. Open http://localhost:8000.
     2. Each dot is a planning application, coloured by status:
             green = granted
@@ -95,7 +95,7 @@ Description: Shows planning applications on a map in county Mayo with descriptio
     10. Area works the same using http://localhost:8000/api/areas/ using a polygon the first and last point 
         must match then http://localhost:8000/api/areas/<id>/applications/
 
-=== API ===
+## API 
 Method  |  Endpoint                       |    what it does           | Log in 
 GET | '/applications'                     | Filter app                | no  
 POST, PATCH, DELETE | /applications/<id>/ | Create, edit, delete      | yes 
@@ -107,12 +107,12 @@ GET | /routes/<id>/nearby/?m=500            | Applications near route  |yes
 GET + POST | /areas/                        | your area                |yes
 GET | /areas/<id>/applications/             | Application in an area   |yes
 
-Errors:
+## Errors:
 400 = bad input
 403 = not logged in 
 404 = not found
 
-=== Database schema ===
+## Database schema 
 Planning applications:
 id          | int, pk 
 refrence    | text (unique)
@@ -141,12 +141,12 @@ name | text
 area | polygon
 owner| fk user
 
-=== Data sources ===
+## Data sources 
 Applications: National Planning Application Database, Department of Housing, Local Government and Heritage
 County Boundaries: National Statutory Boundaries 2024
 Map Tiles: OpenStreetMap 
 
-=== Known issues and limitations ===
+## Known issues and limitations 
 -Data is limited to the 1,000 most recent Mayo County Council applications, to keep the map fast.
 -Application status is inferred from the councils free-text decision, so unusual wording may be misclassified.
 -Routes and areas (queries 4 and 5) can only be created through the API, there is no drawing tool on the map yet.
@@ -154,7 +154,7 @@ Map Tiles: OpenStreetMap
 -Any logged in user can edit any application, a production version would restrict this to admins.
 -Local deployment only, no HTTPS, no Nginx reverse proxy, and Django development server is used.
 
-=== AI use ===
+## AI use
 This project was built with the help of AI
 
 AI helped with:
