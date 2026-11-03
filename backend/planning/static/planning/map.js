@@ -107,7 +107,7 @@ function armQuery(run, message) {
 
 function showError(error) {
   console.error(error);
-  statusEl.textContent = "Something went wrong - see the console for details.";
+  statusEl.textContent = error.message || "Something went wrong - see the console for details.";
 }
 
 // Marks the point that was clicked, then clears old results so they don't pile up.
@@ -130,7 +130,12 @@ document.getElementById("nearest-form").addEventListener("submit", (event) => {
   const n = document.getElementById("nearest-n").value;
   armQuery((latlng) => {
     fetch(`/api/applications/nearest/?lat=${latlng.lat}&lng=${latlng.lng}&n=${n}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Request failed: ${response.status}`);
+        }
+        return response.json();
+})
       .then((geojson) => showApplicationResults(geojson, `Nearest ${n} applications`))
       .catch(showError);
   }, "Click the map to find the nearest applications...");
@@ -141,7 +146,12 @@ document.getElementById("within-form").addEventListener("submit", (event) => {
   const km = document.getElementById("within-km").value;
   armQuery((latlng) => {
     fetch(`/api/applications/within/?lat=${latlng.lat}&lng=${latlng.lng}&km=${km}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Request failed: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((geojson) => showApplicationResults(geojson, `Applications within ${km} km`))
       .catch(showError);
   }, "Click the map to search within a radius...");
