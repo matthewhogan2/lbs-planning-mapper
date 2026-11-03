@@ -50,6 +50,23 @@ function popupHtml(feature)
   `;
 }
 
+fetch("/api/counties/")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Request failed: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((geojson) => {
+    L.geoJSON(geojson, {
+      style: { color: "#555", weight: 1, fillOpacity: 0.03 },
+      onEachFeature: (feature, layer) => layer.bindTooltip(feature.properties.name),
+    })
+      .addTo(map)
+      .bringToBack();
+  })
+  .catch((error) => console.error("Could not load counties:", error));
+
 fetch("/api/applications/")
   .then((response) => {
     if (!response.ok) {
@@ -59,7 +76,7 @@ fetch("/api/applications/")
   })
   .then((geojson) => {
     L.geoJSON(geojson, {
-      // Points need pointToLayer, otherwise Leaflet draws plain default markers.
+      // Points need pointToLayer otherwise Leaflet draws plain default markers.
       pointToLayer: (feature, latlng) => L.circleMarker(latlng, styleByStatus(feature)),
       onEachFeature: (feature, layer) => layer.bindPopup(popupHtml(feature)),
     }).addTo(map);
