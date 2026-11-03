@@ -42,7 +42,7 @@ function popupHtml(feature)
 {
   const p = feature.properties;
   return `
-    <strong>${esc(p.reference)}}</strong><br>
+    <strong>${esc(p.reference)}</strong><br>
     ${esc(p.description)}<br>
     <em>${esc(p.address || "No address given")}</em><br>
     Status: ${esc(p.status)}<br>

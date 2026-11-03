@@ -7,3 +7,21 @@ route for query 4:
 area for query 5:
 
 {"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [[[-9.54, 53.79], [-9.50, 53.79], [-9.50, 53.81], [-9.54, 53.81], [-9.54, 53.79]]]}, "properties": {"name": "Westport town"}}
+
+commands:
+login needed:
+curl -s http://localhost:8000/api/routes/
+
+create route:
+curl -s -u demo:mapper2026 -H "Content-Type: application/json" -X POST http://localhost:8000/api/routes/ -d '{"type":"Feature","geometry":{"type":"LineString","coordinates":[[-9.53,53.80],[-9.50,53.81],[-9.47,53.82]]},"properties":{"name":"Westport greenway"}}'
+
+query 4 applications near a route:
+curl -s -u demo:mapper2026 "http://localhost:8000/api/routes/3/nearby/?m=500" | python3 -m json.tool | head -40
+
+create polygon:
+curl -s -u demo:mapper2026 -H "Content-Type: application/json" -X POST http://localhost:8000/api/areas/ -d '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-9.54,53.79],[-9.50,53.79],[-9.50,53.81],[-9.54,53.81],[-9.54,53.79]]]},"properties":{"name":"Westport town"}}'
+
+query 5 applications inside an area:
+curl -s -u demo:mapper2026 "http://localhost:8000/api/areas/3/applications/" | python3 -m json.tool | head -40
+
+
